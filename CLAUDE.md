@@ -31,6 +31,31 @@ cloudsmith-app.github.io/
 - **ADO reference:** `AB#<id>` in commit messages when applicable
 - **Never:** commit secrets, tokens, connection strings, or API keys — this will be a public repo
 
+## Standards
+
+This repo follows all HCS platform standards defined in the Platform Engineering repo:
+
+| Standard | Reference |
+|---|---|
+| Governance | docs/standards/governance.md in Platform Engineering |
+| Infrastructure | docs/standards/infrastructure.md in Platform Engineering |
+| Documentation | docs/standards/documentation.md in Platform Engineering |
+| Claude Code | docs/standards/claude-code.md in Platform Engineering |
+
+Key rules: No secrets ever — this will be a public repo. No Azure writes without explicit human APPROVE. Commit format: `type(scope): short description`.
+
+## Key facts
+
+| Fact | Value |
+|---|---|
+| GitHub org | cloudsmith-cloud |
+| ADO org | https://dev.azure.com/hybridcloudsolutions |
+| ADO project | CloudSmith |
+| Azure login | kris@hybridsolutions.cloud |
+| Key Vault | kv-hcs-vault-01 (pending ADR-006 for infra vault decisions) |
+| Hosting | Azure Container Apps or App Service — pending ADR-006 |
+| Auth | GitHub App (hcs-platform-app, install ID 132507454) |
+
 ## Subagents
 
 | Agent | Model | Purpose |
@@ -58,7 +83,7 @@ cloudsmith-app.github.io/
 - Max 2 revision rounds before human escalation
 - `/operate` workstream: human must type **APPROVE** before any Azure write executes
 
-## What Claude may do autonomously
+## Claude Code actions
 
 - Read, search, and grep any file in this repo
 - Write and edit files within this repo
