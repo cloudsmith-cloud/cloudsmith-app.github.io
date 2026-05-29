@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CloudSmith — Join the Preview</title>
+  <meta name="description" content="CloudSmith is in private preview. Request early access and get hands-on with infrastructure lifecycle management for Hyper-V and Azure Local." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cs-surface-page:     #0a0a0a;
+      --cs-surface-card:     #141414;
+      --cs-surface-floating: #1c1c1c;
+      --cs-border-default:   #262626;
+      --cs-border-hover:     #404040;
+      --cs-brand:            #f97316;
+      --cs-brand-hover:      #fb8c3a;
+      --cs-brand-glow:       rgba(249,115,22,0.18);
+      --cs-fg-default:       #f5f5f5;
+      --cs-fg-secondary:     #b3b3b3;
+      --cs-fg-tertiary:      #737373;
+      --cs-on-brand:         #000000;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cs-surface-page);
+      color: var(--cs-fg-default);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--cs-border-default);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 1.5rem; height: 60px;
+      display: flex; align-items: center; gap: 0;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 0.5rem;
+      text-decoration: none; margin-right: auto;
+    }
+    .nav-brand-icon {
+      width: 28px; height: 28px;
+      background: var(--cs-brand); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-brand-icon svg { width: 16px; height: 16px; fill: var(--cs-on-brand); }
+    .nav-brand-name { font-size: 1.05rem; font-weight: 700; color: var(--cs-fg-default); letter-spacing: -0.01em; }
+    .nav-back {
+      padding: 0.45rem 0.75rem;
+      color: var(--cs-fg-secondary); text-decoration: none;
+      font-size: 0.875rem; font-weight: 500; border-radius: 6px;
+      transition: color 0.15s, background 0.15s; margin-right: 0.25rem;
+    }
+    .nav-back:hover { color: var(--cs-fg-default); background: var(--cs-surface-floating); }
+    .nav-cta {
+      margin-left: 0.75rem; padding: 0.45rem 1rem;
+      background: var(--cs-brand); color: var(--cs-on-brand);
+      text-decoration: none; font-size: 0.875rem; font-weight: 600;
+      border-radius: 6px; transition: background 0.15s;
+    }
+    .nav-cta:hover { background: var(--cs-brand-hover); }
+
+    /* PAGE */
+    .page-wrap {
+      max-width: 720px; margin: 0 auto;
+      padding: 5rem 1.5rem 6rem;
+    }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.3rem 0.9rem; border-radius: 9999px;
+      border: 1px solid rgba(249,115,22,0.5);
+      background: rgba(249,115,22,0.08);
+      color: var(--cs-brand);
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .badge::before {
+      content: ''; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--cs-brand);
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.25rem);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #fff 0%, #f97316 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.25rem;
+    }
+
+    .lead {
+      font-size: 1.125rem; color: var(--cs-fg-secondary);
+      line-height: 1.75; margin-bottom: 2.5rem; max-width: 580px;
+    }
+
+    .actions {
+      display: flex; flex-wrap: wrap; gap: 0.875rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.75rem 1.75rem;
+      background: var(--cs-brand); color: var(--cs-on-brand);
+      text-decoration: none; font-size: 0.9375rem; font-weight: 600;
+      border-radius: 8px;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      box-shadow: 0 0 0 0 var(--cs-brand-glow);
+    }
+    .btn-primary:hover { background: var(--cs-brand-hover); box-shadow: 0 0 0 4px var(--cs-brand-glow); }
+    .btn-primary:active { background: var(--cs-brand-pressed); transform: translateY(1px); }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.75rem 1.75rem;
+      background: transparent; color: var(--cs-fg-default);
+      text-decoration: none; font-size: 0.9375rem; font-weight: 600;
+      border-radius: 8px; border: 1px solid var(--cs-border-hover);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--cs-brand); background: rgba(249,115,22,0.06); }
+
+    /* PERKS */
+    .perks {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem; margin-bottom: 3.5rem;
+    }
+    .perk {
+      background: var(--cs-surface-card);
+      border: 1px solid var(--cs-border-default);
+      border-radius: 10px; padding: 1.5rem;
+    }
+    .perk-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+    .perk h3 { font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.375rem; }
+    .perk p { font-size: 0.85rem; color: var(--cs-fg-secondary); line-height: 1.6; }
+
+    /* ALREADY HAVE ACCESS */
+    .divider { border: none; border-top: 1px solid var(--cs-border-default); margin: 2.5rem 0; }
+    .already-have {
+      background: var(--cs-surface-card);
+      border: 1px solid var(--cs-border-default);
+      border-radius: 10px; padding: 1.5rem 2rem;
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    .already-have h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .already-have p { font-size: 0.875rem; color: var(--cs-fg-secondary); }
+    .already-have a {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.6rem 1.25rem;
+      background: transparent; color: var(--cs-fg-default);
+      text-decoration: none; font-size: 0.875rem; font-weight: 600;
+      border-radius: 8px; border: 1px solid var(--cs-border-hover);
+      transition: border-color 0.15s, background 0.15s; white-space: nowrap;
+    }
+    .already-have a:hover { border-color: var(--cs-brand); background: rgba(249,115,22,0.06); }
+
+    /* FOOTER */
+    .footer { border-top: 1px solid var(--cs-border-default); padding: 2rem 1.5rem; }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; flex-wrap: wrap;
+      justify-content: space-between; align-items: center; gap: 1rem;
+    }
+    .footer-copy { font-size: 0.8rem; color: var(--cs-fg-tertiary); }
+    .footer-copy a { color: var(--cs-fg-tertiary); text-decoration: none; }
+    .footer-copy a:hover { color: var(--cs-fg-secondary); }
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+    .footer-links a { font-size: 0.8rem; color: var(--cs-fg-tertiary); text-decoration: none; }
+    .footer-links a:hover { color: var(--cs-fg-secondary); }
+
+    @media (max-width: 600px) {
+      .page-wrap { padding: 3.5rem 1rem 4rem; }
+      .already-have { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a href="/" class="nav-brand" aria-label="CloudSmith home">
+          <div class="nav-brand-icon">
+            <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 1 L14 4.5 V11.5 L8 15 L2 11.5 V4.5 Z" fill="none" stroke="#000" stroke-width="1.5"/>
+              <path d="M5 8 L7.5 10.5 L11 6" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <span class="nav-brand-name">CloudSmith</span>
+        </a>
+        <a href="/" class="nav-back">&#8592; Home</a>
+        <a href="/deploy.html" class="nav-cta">Deploy Now</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="page-wrap">
+
+      <div class="badge">Private Preview</div>
+
+      <h1>Get early access to CloudSmith</h1>
+
+      <p class="lead">
+        CloudSmith is in private preview. Preview members get hands-on access to the latest builds, a direct feedback channel with the core team, and early input on the roadmap. No SLA, no commitment — just early access to what's being built.
+      </p>
+
+      <div class="actions">
+        <a
+          href="https://github.com/cloudsmith-cloud/cloudsmith-cloud.github.io/discussions"
+          class="btn-primary"
+          target="_blank" rel="noopener noreferrer"
+          aria-label="Request early access via GitHub Discussions"
+        >
+          Request Access via GitHub &#x2192;
+        </a>
+        <a href="/deploy.html" class="btn-secondary">Deploy Now</a>
+      </div>
+
+      <div class="perks">
+        <div class="perk">
+          <div class="perk-icon">&#128640;</div>
+          <h3>Latest Builds</h3>
+          <p>Access the most recent releases before they're publicly announced.</p>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">&#128172;</div>
+          <h3>Direct Feedback Channel</h3>
+          <p>Report issues and request features directly to the core team via GitHub Discussions.</p>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">&#128202;</div>
+          <h3>Roadmap Input</h3>
+          <p>Early access members shape what ships next — your feedback drives the roadmap.</p>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="already-have">
+        <div>
+          <h3>Already have access?</h3>
+          <p>Connect directly to your CloudSmith portal.</p>
+        </div>
+        <a href="/deploy.html">Connect to Portal &#x2192;</a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="footer-copy">
+        &copy; 2026 <a href="https://hybridsolutions.cloud">Hybrid Cloud Solutions</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://cloudsmith.cloud">cloudsmith.cloud</a>
+        &nbsp;&middot;&nbsp;
+        Apache 2.0
+      </p>
+      <ul class="footer-links">
+        <li><a href="/deploy.html">Connect to Portal</a></li>
+        <li><a href="/status.html">Status</a></li>
+        <li><a href="https://docs.cloudsmith.cloud">Docs</a></li>
+        <li><a href="https://github.com/cloudsmith-cloud" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      </ul>
+    </div>
+  </footer>
+
+</body>
+</html>
