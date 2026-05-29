@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CloudSmith — Deployment Models</title>
+  <meta name="description" content="CloudSmith deployment options: Standalone On-Premises, Azure PaaS, and Hybrid. 100% open source, Apache 2.0 — free forever." />
+  <meta property="og:title" content="CloudSmith — Deployment Models &amp; Pricing" />
+  <meta property="og:description" content="Three deployment models, one codebase. Free, open source, Apache 2.0." />
+  <meta property="og:url" content="https://cloudsmith.app/pricing" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --cs-surface-page:    #0a0a0a;
+      --cs-surface-card:    #141414;
+      --cs-surface-float:   #1c1c1c;
+      --cs-border:          #262626;
+      --cs-border-hover:    #404040;
+      --cs-brand:           #f97316;
+      --cs-brand-hover:     #fb8c3a;
+      --cs-text-primary:    #e5e5e5;
+      --cs-text-secondary:  #a3a3a3;
+      --cs-text-muted:      #525252;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--cs-surface-page);
+      color: var(--cs-text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 10, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--cs-border);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--cs-text-primary);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-brand span {
+      color: var(--cs-brand);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--cs-text-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover {
+      color: var(--cs-text-primary);
+    }
+
+    .nav-links a.active {
+      color: var(--cs-brand);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem 3rem;
+      text-align: center;
+    }
+
+    .oss-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 1.1rem;
+      border-radius: 9999px;
+      background: rgba(249, 115, 22, 0.1);
+      border: 1px solid rgba(249, 115, 22, 0.35);
+      color: var(--cs-brand);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #ffffff 0%, var(--cs-brand) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      color: var(--cs-text-secondary);
+      font-size: 1.15rem;
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.75;
+    }
+
+    .hero-price {
+      display: inline-block;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--cs-brand);
+      line-height: 1;
+    }
+
+    .hero-price-label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--cs-text-secondary);
+      font-weight: 500;
+      margin-top: 0.3rem;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Section ── */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cs-brand);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 800;
+      color: var(--cs-text-primary);
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .section-subtitle {
+      color: var(--cs-text-secondary);
+      font-size: 1rem;
+      max-width: 600px;
+      margin-bottom: 3rem;
+      line-height: 1.7;
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--cs-border);
+      margin: 0;
+    }
+
+    /* ── Deployment cards ── */
+    .deploy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+
+    .deploy-card {
+      background: var(--cs-surface-card);
+      border: 1px solid var(--cs-border);
+      border-radius: 14px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .deploy-card:hover {
+      border-color: var(--cs-border-hover);
+      transform: translateY(-2px);
+    }
+
+    .deploy-card.featured {
+      border-color: rgba(249, 115, 22, 0.45);
+      position: relative;
+    }
+
+    .deploy-card.featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--cs-brand);
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.85rem;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .deploy-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(249, 115, 22, 0.1);
+      border: 1px solid rgba(249, 115, 22, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .deploy-card h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--cs-text-primary);
+    }
+
+    .deploy-card .deploy-tagline {
+      font-size: 0.875rem;
+      color: var(--cs-text-secondary);
+      line-height: 1.65;
+    }
+
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex: 1;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.875rem;
+      color: var(--cs-text-secondary);
+      line-height: 1.5;
+    }
+
+    .feature-list li .check {
+      color: var(--cs-brand);
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--cs-brand);
+      color: #000;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.15s;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background: var(--cs-brand-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      color: var(--cs-text-primary);
+      border: 1px solid var(--cs-border-hover);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: border-color 0.15s, color 0.15s, transform 0.15s;
+      width: 100%;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--cs-brand);
+      color: var(--cs-brand);
+      transform: translateY(-1px);
+    }
+
+    /* ── Comparison table ── */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--cs-border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    thead th {
+      background: var(--cs-surface-float);
+      padding: 0.9rem 1.25rem;
+      text-align: left;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--cs-text-secondary);
+      border-bottom: 1px solid var(--cs-border);
+    }
+
+    thead th:first-child {
+      border-radius: 12px 0 0 0;
+    }
+
+    thead th:last-child {
+      border-radius: 0 12px 0 0;
+    }
+
+    thead th.col-header {
+      color: var(--cs-brand);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--cs-border);
+      transition: background 0.12s;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: var(--cs-surface-float);
+    }
+
+    tbody td {
+      padding: 0.85rem 1.25rem;
+      font-size: 0.875rem;
+      color: var(--cs-text-secondary);
+      vertical-align: middle;
+    }
+
+    tbody td:first-child {
+      color: var(--cs-text-primary);
+      font-weight: 600;
+    }
+
+    tbody td.cat-row {
+      background: var(--cs-surface-page);
+      color: var(--cs-text-muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.25rem;
+    }
+
+    .check-yes {
+      color: #4ade80;
+      font-size: 1rem;
+    }
+
+    .check-partial {
+      color: var(--cs-brand);
+      font-size: 0.85rem;
+    }
+
+    .check-no {
+      color: var(--cs-text-muted);
+      font-size: 1rem;
+    }
+
+    /* ── FAQ ── */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 800px;
+    }
+
+    .faq-item {
+      background: var(--cs-surface-card);
+      border: 1px solid var(--cs-border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .faq-item h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--cs-text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .faq-item p {
+      font-size: 0.875rem;
+      color: var(--cs-text-secondary);
+      line-height: 1.65;
+    }
+
+    .faq-item a {
+      color: var(--cs-brand);
+      text-decoration: none;
+    }
+
+    .faq-item a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── CTA strip ── */
+    .cta-strip {
+      background: var(--cs-surface-card);
+      border-top: 1px solid var(--cs-border);
+      border-bottom: 1px solid var(--cs-border);
+      padding: 3.5rem 2rem;
+      text-align: center;
+    }
+
+    .cta-strip h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      color: var(--cs-text-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .cta-strip p {
+      color: var(--cs-text-secondary);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-group .btn-primary,
+    .btn-group .btn-secondary {
+      width: auto;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--cs-border);
+      color: var(--cs-text-muted);
+      font-size: 0.8rem;
+      line-height: 1.7;
+    }
+
+    footer a {
+      color: #525252;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    footer a:hover {
+      color: var(--cs-text-secondary);
+    }
+
+    @media (max-width: 640px) {
+      .deploy-grid {
+        grid-template-columns: 1fr;
+      }
+
+      nav .nav-links {
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav>
+    <a class="nav-brand" href="/">Cloud<span>Smith</span></a>
+    <ul class="nav-links">
+      <li><a href="/product.html">Capabilities</a></li>
+      <li><a href="/pricing.html" class="active">Deployment</a></li>
+      <li><a href="https://cloudsmith.cloud" target="_blank" rel="noopener">Docs</a></li>
+      <li><a href="https://github.com/cloudsmith-cloud" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <div class="hero">
+    <div class="oss-banner">&#x2665; Apache 2.0 &nbsp;&mdash;&nbsp; 100% Open Source</div>
+    <h1>Deploy your way.<br />Always free.</h1>
+    <p>
+      CloudSmith is completely free and open source under the Apache 2.0 license.
+      Choose the deployment model that fits your environment &mdash; on-premises,
+      cloud-managed, or hybrid &mdash; with no licensing cost, no seat fees, no vendor lock-in.
+    </p>
+    <div>
+      <span class="hero-price">$0</span>
+      <span class="hero-price-label">per node &nbsp;&middot;&nbsp; per user &nbsp;&middot;&nbsp; per cluster &nbsp;&middot;&nbsp; forever</span>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- ── Deployment model cards ── -->
+  <section class="section">
+    <p class="section-label">Deployment Models</p>
+    <h2 class="section-title">Three models, one codebase</h2>
+    <p class="section-subtitle">
+      Every deployment model runs the same open-source platform. Choose based on your
+      operational model, connectivity constraints, and team preference.
+    </p>
+
+    <div class="deploy-grid">
+
+      <!-- Standalone On-Premises -->
+      <div class="deploy-card">
+        <div class="deploy-icon">&#x1F3DA;</div>
+        <h3>Standalone On-Premises</h3>
+        <p class="deploy-tagline">
+          Self-hosted control plane running entirely inside your network.
+          No cloud dependency — works air-gapped, disconnected, or behind strict egress rules.
+        </p>
+        <ul class="feature-list">
+          <li><span class="check">&#x25B6;</span> Full control plane runs on your own hardware</li>
+          <li><span class="check">&#x25B6;</span> Air-gap ready — Bundled and Appliance install modes</li>
+          <li><span class="check">&#x25B6;</span> No outbound internet required after install</li>
+          <li><span class="check">&#x25B6;</span> Local Keycloak identity or LDAP/AD integration</li>
+          <li><span class="check">&#x25B6;</span> PostgreSQL database on-prem — you own your data</li>
+          <li><span class="check">&#x25B6;</span> Ideal for regulated environments and edge sites</li>
+          <li><span class="check">&#x25B6;</span> Online, Bundled, and Appliance install modes</li>
+        </ul>
+        <a class="btn-secondary" href="https://cloudsmith.cloud/docs/install/on-prem" target="_blank" rel="noopener">
+          Deploy On-Premises &#x2192;
+        </a>
+      </div>
+
+      <!-- Azure PaaS -->
+      <div class="deploy-card featured">
+        <div class="deploy-icon">&#x2601;</div>
+        <h3>Azure PaaS</h3>
+        <p class="deploy-tagline">
+          Cloud-managed control plane running in your Azure subscription.
+          CloudSmith agents run on-premises, connecting back to the PaaS hub
+          via the CloudSmith Relay — no inbound firewall holes required.
+        </p>
+        <ul class="feature-list">
+          <li><span class="check">&#x25B6;</span> Control plane hosted in Azure Container Apps</li>
+          <li><span class="check">&#x25B6;</span> One-click deploy via azd (Azure Developer CLI)</li>
+          <li><span class="check">&#x25B6;</span> Agents connect outbound to relay — no VPN needed</li>
+          <li><span class="check">&#x25B6;</span> Managed PostgreSQL Flexible Server (Azure)</li>
+          <li><span class="check">&#x25B6;</span> Azure Entra ID or local admin auth</li>
+          <li><span class="check">&#x25B6;</span> Scales to multiple sites from one pane of glass</li>
+          <li><span class="check">&#x25B6;</span> Azure Monitor / Application Insights integration</li>
+        </ul>
+        <a class="btn-primary" href="https://cloudsmith.cloud/docs/install/paas" target="_blank" rel="noopener">
+          Deploy to Azure &#x2192;
+        </a>
+      </div>
+
+      <!-- Hybrid -->
+      <div class="deploy-card">
+        <div class="deploy-icon">&#x1F504;</div>
+        <h3>Hybrid</h3>
+        <p class="deploy-tagline">
+          Bidirectional sync between an on-premises control plane and an Azure-hosted
+          management hub. Run locally when the cloud is unreachable; sync when connected.
+        </p>
+        <ul class="feature-list">
+          <li><span class="check">&#x25B6;</span> On-prem control plane + Azure management hub</li>
+          <li><span class="check">&#x25B6;</span> Bidirectional config and telemetry sync</li>
+          <li><span class="check">&#x25B6;</span> Continues operating during cloud connectivity loss</li>
+          <li><span class="check">&#x25B6;</span> Unified multi-site view from Azure portal</li>
+          <li><span class="check">&#x25B6;</span> Best of both: air-gap resilience + cloud scale</li>
+          <li><span class="check">&#x25B6;</span> Conflict resolution with configurable merge policy</li>
+          <li><span class="check">&#x25B6;</span> Suitable for branch-office and edge deployments</li>
+        </ul>
+        <a class="btn-secondary" href="https://cloudsmith.cloud/docs/install/hybrid" target="_blank" rel="noopener">
+          Learn about Hybrid &#x2192;
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── Comparison table ── -->
+  <section class="section">
+    <p class="section-label">Feature Comparison</p>
+    <h2 class="section-title">Which model is right for you?</h2>
+    <p class="section-subtitle">
+      All three models run the same open-source platform. Differences are operational,
+      not functional &mdash; every feature is available in every model.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 35%">Feature</th>
+            <th class="col-header">On-Premises</th>
+            <th class="col-header">Azure PaaS</th>
+            <th class="col-header">Hybrid</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr><td class="cat-row" colspan="4">Deployment &amp; Install</td></tr>
+          <tr>
+            <td>Install time</td>
+            <td>~30 min</td>
+            <td>~10 min (azd)</td>
+            <td>~45 min</td>
+          </tr>
+          <tr>
+            <td>Air-gap / offline install</td>
+            <td><span class="check-yes">&#x2713;</span> Bundled + Appliance modes</td>
+            <td><span class="check-no">&mdash;</span> Requires Azure</td>
+            <td><span class="check-partial">Partial</span> On-prem side only</td>
+          </tr>
+          <tr>
+            <td>Automated upgrades</td>
+            <td><span class="check-partial">Manual</span> via self-update module</td>
+            <td><span class="check-yes">&#x2713;</span> ACA revision rolling</td>
+            <td><span class="check-partial">Mixed</span></td>
+          </tr>
+
+          <tr><td class="cat-row" colspan="4">Infrastructure &amp; Data</td></tr>
+          <tr>
+            <td>Database location</td>
+            <td>On-premises (self-managed PG)</td>
+            <td>Azure (Managed PG Flex)</td>
+            <td>Both (synced)</td>
+          </tr>
+          <tr>
+            <td>Data sovereignty</td>
+            <td><span class="check-yes">&#x2713;</span> Data never leaves site</td>
+            <td>Azure region of your choice</td>
+            <td>Configurable per-data-class</td>
+          </tr>
+          <tr>
+            <td>Backup &amp; disaster recovery</td>
+            <td>Self-managed</td>
+            <td>Azure Backup (managed)</td>
+            <td>Both</td>
+          </tr>
+          <tr>
+            <td>High availability</td>
+            <td>Manual clustering</td>
+            <td><span class="check-yes">&#x2713;</span> ACA zone redundancy</td>
+            <td>ACA + on-prem HA</td>
+          </tr>
+
+          <tr><td class="cat-row" colspan="4">Identity &amp; Security</td></tr>
+          <tr>
+            <td>Authentication</td>
+            <td>Local admin / Keycloak</td>
+            <td>Azure Entra ID / local admin</td>
+            <td>Both (federated)</td>
+          </tr>
+          <tr>
+            <td>RBAC</td>
+            <td><span class="check-yes">&#x2713;</span></td>
+            <td><span class="check-yes">&#x2713;</span></td>
+            <td><span class="check-yes">&#x2713;</span></td>
+          </tr>
+          <tr>
+            <td>MFA / SSO</td>
+            <td><span class="check-partial">Via Keycloak</span></td>
+            <td><span class="check-yes">&#x2713;</span> Entra ID</td>
+            <td><span class="check-yes">&#x2713;</span></td>
+          </tr>
+          <tr>
+            <td>Secrets management</td>
+            <td>Local vault</td>
+            <td>Azure Key Vault</td>
+            <td>Both</td>
+          </tr>
+
+          <tr><td class="cat-row" colspan="4">Observability</td></tr>
+          <tr>
+            <td>Telemetry backend</td>
+            <td>Self-hosted (Prometheus / Loki)</td>
+            <td>Azure Monitor + App Insights</td>
+            <td>Both</td>
+          </tr>
+          <tr>
+            <td>Log retention</td>
+            <td>Self-managed</td>
+            <td>Azure Log Analytics</td>
+            <td>Both</td>
+          </tr>
+          <tr>
+            <td>OpenTelemetry export</td>
+            <td><span class="check-yes">&#x2713;</span></td>
+            <td><span class="check-yes">&#x2713;</span></td>
+            <td><span class="check-yes">&#x2713;</span></td>
+          </tr>
+
+          <tr><td class="cat-row" colspan="4">Multi-site &amp; Scale</td></tr>
+          <tr>
+            <td>Multi-site management</td>
+            <td><span class="check-no">&mdash;</span> Single site</td>
+            <td><span class="check-yes">&#x2713;</span> All sites via one pane</td>
+            <td><span class="check-yes">&#x2713;</span></td>
+          </tr>
+          <tr>
+            <td>Disconnected site operation</td>
+            <td><span class="check-yes">&#x2713;</span></td>
+            <td><span class="check-no">&mdash;</span></td>
+            <td><span class="check-yes">&#x2713;</span></td>
+          </tr>
+
+          <tr><td class="cat-row" colspan="4">Licensing &amp; Support</td></tr>
+          <tr>
+            <td>License</td>
+            <td>Apache 2.0 — free forever</td>
+            <td>Apache 2.0 — free forever</td>
+            <td>Apache 2.0 — free forever</td>
+          </tr>
+          <tr>
+            <td>Per-node fees</td>
+            <td><span class="check-yes">&#x2713;</span> None</td>
+            <td><span class="check-yes">&#x2713;</span> None</td>
+            <td><span class="check-yes">&#x2713;</span> None</td>
+          </tr>
+          <tr>
+            <td>Commercial support</td>
+            <td>Community (GitHub)</td>
+            <td>Community (GitHub)</td>
+            <td>Community (GitHub)</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── FAQ ── -->
+  <section class="section">
+    <p class="section-label">Common Questions</p>
+    <h2 class="section-title">Frequently asked</h2>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <h4>Is CloudSmith really free? What is the catch?</h4>
+        <p>
+          There is no catch. CloudSmith is released under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Apache 2.0 license</a>
+          &mdash; you can use it commercially, modify it, and redistribute it without paying anyone.
+          The only costs are your own infrastructure (VMs, Azure subscription charges, etc.)
+          which you control entirely.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h4>Do I need Azure to run CloudSmith?</h4>
+        <p>
+          No. The Standalone On-Premises model runs entirely inside your network with zero
+          Azure dependency. Azure PaaS and Hybrid are options for teams that want a cloud-managed
+          control plane or multi-site visibility &mdash; they are not required.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h4>Can I run CloudSmith air-gapped?</h4>
+        <p>
+          Yes. The Bundled install mode ships all container images and dependencies as a single
+          archive. The Appliance mode provides a pre-built OVA/VHDX. Neither requires internet
+          access after download. See the
+          <a href="https://cloudsmith.cloud/docs/install/bundled" target="_blank" rel="noopener">bundled install guide</a>
+          for details.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h4>What hardware vendors are supported?</h4>
+        <p>
+          The hardware management module supports Dell (iDRAC / Redfish), HPE (iLO), and
+          Lenovo (XCC) out of the box. The Hardware Abstraction Layer (HAL) is extensible &mdash;
+          community-contributed adapters for additional vendors are welcome.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h4>How does the Azure PaaS model bill?</h4>
+        <p>
+          CloudSmith itself has no licensing cost. You pay only standard Azure resource rates for
+          the services CloudSmith provisions in your subscription: Azure Container Apps, Azure
+          Database for PostgreSQL Flexible Server, Azure Key Vault, and Azure Monitor. The
+          <a href="https://cloudsmith.cloud/docs/install/paas#cost-estimate" target="_blank" rel="noopener">cost estimate guide</a>
+          provides typical monthly figures for a small deployment.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h4>Can I switch deployment models later?</h4>
+        <p>
+          Migrating from On-Premises to PaaS (or vice versa) is supported via the CloudSmith
+          backup and restore pipeline. The migration guide walks through exporting the database,
+          re-deploying to the target model, and reconnecting agents. Expect a short maintenance
+          window during the cutover.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <div class="cta-strip">
+    <h2>Start in under 30 minutes.</h2>
+    <p>Pick a model and follow the step-by-step install guide &mdash; no license key, no sign-up, no waiting.</p>
+    <div class="btn-group">
+      <a class="btn-primary" href="https://cloudsmith.cloud/docs/install" target="_blank" rel="noopener">Get started &nbsp;&#x2192;</a>
+      <a class="btn-secondary" href="https://github.com/cloudsmith-cloud" target="_blank" rel="noopener">View on GitHub</a>
+      <a class="btn-secondary" href="/product.html">See all capabilities</a>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p>
+      Built by <a href="https://hybridsolutions.cloud">Hybrid Cloud Solutions</a>
+      &nbsp;&#xB7;&nbsp;
+      <a href="https://github.com/cloudsmith-cloud" target="_blank" rel="noopener">GitHub</a>
+      &nbsp;&#xB7;&nbsp;
+      <a href="https://cloudsmith.cloud" target="_blank" rel="noopener">cloudsmith.cloud</a>
+    </p>
+    <p style="margin-top: 0.4rem; color: #2a2a2a;">
+      Apache 2.0 &mdash; open source forever.
+    </p>
+  </footer>
+
+</body>
+</html>

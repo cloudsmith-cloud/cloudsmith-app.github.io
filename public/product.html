@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CloudSmith — Capabilities</title>
+  <meta name="description" content="CloudSmith capabilities: deploy, monitor, update, troubleshoot, and manage Hyper-V and Azure Local infrastructure with full lifecycle coverage." />
+  <meta property="og:title" content="CloudSmith — Platform Capabilities" />
+  <meta property="og:description" content="Every capability you need to run a private cloud — from day-zero deployment to day-two operations and beyond." />
+  <meta property="og:url" content="https://cloudsmith.app/product" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --cs-surface-page:    #0a0a0a;
+      --cs-surface-card:    #141414;
+      --cs-surface-float:   #1c1c1c;
+      --cs-border:          #262626;
+      --cs-border-hover:    #404040;
+      --cs-brand:           #f97316;
+      --cs-brand-hover:     #fb8c3a;
+      --cs-text-primary:    #e5e5e5;
+      --cs-text-secondary:  #a3a3a3;
+      --cs-text-muted:      #525252;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--cs-surface-page);
+      color: var(--cs-text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 10, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--cs-border);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--cs-text-primary);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-brand span {
+      color: var(--cs-brand);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--cs-text-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--cs-text-primary);
+    }
+
+    .nav-links a.active {
+      color: var(--cs-brand);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem 3rem;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.3rem 0.9rem;
+      border-radius: 9999px;
+      border: 1px solid var(--cs-brand);
+      color: var(--cs-brand);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #ffffff 0%, var(--cs-brand) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      color: var(--cs-text-secondary);
+      font-size: 1.15rem;
+      max-width: 640px;
+      margin: 0 auto;
+      line-height: 1.75;
+    }
+
+    /* ── Section ── */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cs-brand);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 800;
+      color: var(--cs-text-primary);
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .section-subtitle {
+      color: var(--cs-text-secondary);
+      font-size: 1rem;
+      max-width: 600px;
+      margin-bottom: 3rem;
+      line-height: 1.7;
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--cs-border);
+      margin: 0;
+    }
+
+    /* ── Capabilities grid ── */
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .capability-card {
+      background: var(--cs-surface-card);
+      border: 1px solid var(--cs-border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: border-color 0.2s, transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .capability-card:hover {
+      border-color: var(--cs-border-hover);
+      transform: translateY(-2px);
+    }
+
+    .cap-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(249, 115, 22, 0.12);
+      border: 1px solid rgba(249, 115, 22, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .cap-content h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--cs-text-primary);
+      margin-bottom: 0.4rem;
+    }
+
+    .cap-content p {
+      font-size: 0.9rem;
+      color: var(--cs-text-secondary);
+      line-height: 1.65;
+    }
+
+    .cap-screenshot {
+      background: var(--cs-surface-float);
+      border: 1px dashed var(--cs-border-hover);
+      border-radius: 8px;
+      height: 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .cap-screenshot .screenshot-icon {
+      font-size: 1.75rem;
+      opacity: 0.3;
+    }
+
+    .cap-screenshot .screenshot-caption {
+      font-size: 0.75rem;
+      color: var(--cs-text-muted);
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    /* ── Tags ── */
+    .cap-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      background: rgba(249, 115, 22, 0.08);
+      border: 1px solid rgba(249, 115, 22, 0.18);
+      color: var(--cs-brand);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Modules table ── */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .module-row {
+      background: var(--cs-surface-card);
+      border: 1px solid var(--cs-border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: border-color 0.15s;
+    }
+
+    .module-row:hover {
+      border-color: var(--cs-border-hover);
+    }
+
+    .module-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--cs-text-primary);
+    }
+
+    .module-desc {
+      font-size: 0.78rem;
+      color: var(--cs-text-secondary);
+      margin-top: 0.15rem;
+    }
+
+    .status-pill {
+      padding: 0.2rem 0.65rem;
+      border-radius: 9999px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .status-shipped {
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #4ade80;
+    }
+
+    .status-progress {
+      background: rgba(249, 115, 22, 0.12);
+      border: 1px solid rgba(249, 115, 22, 0.3);
+      color: var(--cs-brand);
+    }
+
+    .status-planned {
+      background: rgba(113, 113, 122, 0.12);
+      border: 1px solid rgba(113, 113, 122, 0.25);
+      color: #71717a;
+    }
+
+    /* ── CTA strip ── */
+    .cta-strip {
+      background: var(--cs-surface-card);
+      border-top: 1px solid var(--cs-border);
+      border-bottom: 1px solid var(--cs-border);
+      padding: 3.5rem 2rem;
+      text-align: center;
+    }
+
+    .cta-strip h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      color: var(--cs-text-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .cta-strip p {
+      color: var(--cs-text-secondary);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.7rem 1.5rem;
+      background: var(--cs-brand);
+      color: #000;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.15s;
+    }
+
+    .btn-primary:hover {
+      background: var(--cs-brand-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.7rem 1.5rem;
+      background: transparent;
+      color: var(--cs-text-primary);
+      border: 1px solid var(--cs-border-hover);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: border-color 0.15s, color 0.15s, transform 0.15s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--cs-brand);
+      color: var(--cs-brand);
+      transform: translateY(-1px);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--cs-border);
+      color: var(--cs-text-muted);
+      font-size: 0.8rem;
+      line-height: 1.7;
+    }
+
+    footer a {
+      color: #525252;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    footer a:hover {
+      color: var(--cs-text-secondary);
+    }
+
+    @media (max-width: 640px) {
+      .capabilities-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modules-grid {
+        grid-template-columns: 1fr;
+      }
+
+      nav .nav-links {
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav>
+    <a class="nav-brand" href="/">Cloud<span>Smith</span></a>
+    <ul class="nav-links">
+      <li><a href="/product.html" class="active">Capabilities</a></li>
+      <li><a href="/pricing.html">Deployment</a></li>
+      <li><a href="https://cloudsmith.cloud" target="_blank" rel="noopener">Docs</a></li>
+      <li><a href="https://github.com/cloudsmith-cloud" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <div class="hero">
+    <div class="badge">Platform Capabilities</div>
+    <h1>Everything your private cloud needs</h1>
+    <p>
+      CloudSmith covers the full infrastructure lifecycle — from day-zero cluster deployment
+      to day-two operations, firmware management, and AI-assisted diagnostics.
+      One platform, every stage.
+    </p>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- ── Core Capabilities ── -->
+  <section class="section">
+    <p class="section-label">Core Capabilities</p>
+    <h2 class="section-title">Six disciplines, one platform</h2>
+    <p class="section-subtitle">
+      Each capability ships as a module with a clean interface slot — compose only what you need,
+      extend with your own modules, or contribute upstream.
+    </p>
+
+    <div class="capabilities-grid">
+
+      <!-- Deploy -->
+      <div class="capability-card">
+        <div class="cap-icon">&#x26A1;</div>
+        <div class="cap-content">
+          <h3>Deploy</h3>
+          <p>
+            Bootstrap Hyper-V failover clusters and Azure Local instances from a browser-based
+            wizard. Define cluster topology, network configuration, and storage layout —
+            CloudSmith handles the rest via a structured installation pipeline with full rollback support.
+          </p>
+        </div>
+        <div class="cap-screenshot">
+          <div class="screenshot-icon">&#x1F5A5;</div>
+          <div class="screenshot-caption">Cluster deployment wizard — node discovery, network config, validation</div>
+        </div>
+        <div class="cap-tags">
+          <span class="tag">Hyper-V</span>
+          <span class="tag">Azure Local</span>
+          <span class="tag">WSFC</span>
+          <span class="tag">Wizard</span>
+        </div>
+      </div>
+
+      <!-- Monitor -->
+      <div class="capability-card">
+        <div class="cap-icon">&#x1F4CA;</div>
+        <div class="cap-content">
+          <h3>Monitor</h3>
+          <p>
+            Real-time health dashboards aggregated from all nodes, storage paths, and workloads.
+            Built-in alerting with configurable thresholds, alert routing, and integration
+            with existing monitoring stacks via OpenTelemetry export.
+          </p>
+        </div>
+        <div class="cap-screenshot">
+          <div class="screenshot-icon">&#x1F5A5;</div>
+          <div class="screenshot-caption">Cluster health overview — node status, storage, workload heat map</div>
+        </div>
+        <div class="cap-tags">
+          <span class="tag">Health</span>
+          <span class="tag">Alerts</span>
+          <span class="tag">OpenTelemetry</span>
+          <span class="tag">Dashboards</span>
+        </div>
+      </div>
+
+      <!-- Update -->
+      <div class="capability-card">
+        <div class="cap-icon">&#x1F504;</div>
+        <div class="cap-content">
+          <h3>Update</h3>
+          <p>
+            Orchestrated OS and firmware update pipelines with live-migration awareness.
+            CloudSmith drains workloads before patching each node, validates patch success,
+            and surfaces a full audit trail of every update event across the fleet.
+          </p>
+        </div>
+        <div class="cap-screenshot">
+          <div class="screenshot-icon">&#x1F5A5;</div>
+          <div class="screenshot-caption">Update pipeline — node queue, drain status, firmware versions</div>
+        </div>
+        <div class="cap-tags">
+          <span class="tag">OS Patches</span>
+          <span class="tag">Firmware</span>
+          <span class="tag">Drivers</span>
+          <span class="tag">Live Migration</span>
+        </div>
+      </div>
+
+      <!-- Troubleshoot -->
+      <div class="capability-card">
+        <div class="cap-icon">&#x1F9E0;</div>
+        <div class="cap-content">
+          <h3>Troubleshoot</h3>
+          <p>
+            AI-assisted diagnostics surface probable root causes from event logs, performance
+            counters, and cluster validation output. Natural-language queries let operators
+            interrogate infrastructure state without deep PowerShell expertise.
+          </p>
+        </div>
+        <div class="cap-screenshot">
+          <div class="screenshot-icon">&#x1F5A5;</div>
+          <div class="screenshot-caption">AI diagnostics panel — event correlation, suggested remediation steps</div>
+        </div>
+        <div class="cap-tags">
+          <span class="tag">AI Diagnostics</span>
+          <span class="tag">Event Logs</span>
+          <span class="tag">Root Cause</span>
+        </div>
+      </div>
+
+      <!-- Hardware -->
+      <div class="capability-card">
+        <div class="cap-icon">&#x1F527;</div>
+        <div class="cap-content">
+          <h3>Hardware</h3>
+          <p>
+            Vendor-agnostic BMC management for Dell iDRAC, HPE iLO, and Lenovo XCC.
+            Inventory hardware health, power status, and firmware versions across mixed
+            fleets — without logging into each vendor console separately.
+          </p>
+        </div>
+        <div class="cap-screenshot">
+          <div class="screenshot-icon">&#x1F5A5;</div>
+          <div class="screenshot-caption">Hardware inventory — BMC health, power, fan/temp across vendors</div>
+        </div>
+        <div class="cap-tags">
+          <span class="tag">Dell iDRAC</span>
+          <span class="tag">HPE iLO</span>
+          <span class="tag">Lenovo XCC</span>
+          <span class="tag">BMC</span>
+        </div>
+      </div>
+
+      <!-- Planning -->
+      <div class="capability-card">
+        <div class="cap-icon">&#x1F4CB;</div>
+        <div class="cap-content">
+          <h3>Planning</h3>
+          <p>
+            Capacity planning tools project resource consumption over time using historical
+            usage trends. Model cluster expansions, estimate hardware requirements before
+            procurement, and validate that new workloads fit before deployment.
+          </p>
+        </div>
+        <div class="cap-screenshot">
+          <div class="screenshot-icon">&#x1F5A5;</div>
+          <div class="screenshot-caption">Capacity planner — trend lines, growth projections, headroom analysis</div>
+        </div>
+        <div class="cap-tags">
+          <span class="tag">Capacity</span>
+          <span class="tag">Growth Trends</span>
+          <span class="tag">Procurement</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── Modules ── -->
+  <section class="section">
+    <p class="section-label">Module Catalog</p>
+    <h2 class="section-title">Composable by design</h2>
+    <p class="section-subtitle">
+      CloudSmith ships as a core platform plus independently deployed modules.
+      Install only what your environment needs. All modules are open source under Apache 2.0.
+    </p>
+
+    <div class="modules-grid">
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">cluster-mgmt</div>
+          <div class="module-desc">Cluster lifecycle — create, expand, decommission</div>
+        </div>
+        <span class="status-pill status-shipped">Shipped</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">monitoring</div>
+          <div class="module-desc">Health dashboards, alerts, OpenTelemetry export</div>
+        </div>
+        <span class="status-pill status-shipped">Shipped</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">update-mgmt</div>
+          <div class="module-desc">OS and firmware update orchestration</div>
+        </div>
+        <span class="status-pill status-progress">In Progress</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">workload-mgmt</div>
+          <div class="module-desc">VM and container workload lifecycle</div>
+        </div>
+        <span class="status-pill status-progress">In Progress</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">hardware-mgmt</div>
+          <div class="module-desc">BMC inventory — Dell, HPE, Lenovo</div>
+        </div>
+        <span class="status-pill status-progress">In Progress</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">identity</div>
+          <div class="module-desc">SSO, RBAC, Keycloak integration</div>
+        </div>
+        <span class="status-pill status-progress">In Progress</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">ai-diagnostics</div>
+          <div class="module-desc">AI-assisted root-cause and query engine</div>
+        </div>
+        <span class="status-pill status-planned">Planned</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">capacity-planning</div>
+          <div class="module-desc">Resource trend analysis and growth projection</div>
+        </div>
+        <span class="status-pill status-planned">Planned</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">backup-mgmt</div>
+          <div class="module-desc">Policy-based VM and volume backup</div>
+        </div>
+        <span class="status-pill status-planned">Planned</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">networking</div>
+          <div class="module-desc">Network ATC profiles, SDN, virtual switches</div>
+        </div>
+        <span class="status-pill status-planned">Planned</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">storage-mgmt</div>
+          <div class="module-desc">S2D pool management, tiering, volumes</div>
+        </div>
+        <span class="status-pill status-planned">Planned</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">cost-mgmt</div>
+          <div class="module-desc">On-prem resource cost attribution and chargeback</div>
+        </div>
+        <span class="status-pill status-planned">Planned</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">compliance</div>
+          <div class="module-desc">Policy drift detection and remediation</div>
+        </div>
+        <span class="status-pill status-planned">Planned</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">image-mgmt</div>
+          <div class="module-desc">OS image library — capture, publish, version</div>
+        </div>
+        <span class="status-pill status-planned">Planned</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">secrets-mgmt</div>
+          <div class="module-desc">Vault integration — secrets distribution to workloads</div>
+        </div>
+        <span class="status-pill status-planned">Planned</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">dns-mgmt</div>
+          <div class="module-desc">Internal DNS zone management</div>
+        </div>
+        <span class="status-pill status-planned">Planned</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">config-registry</div>
+          <div class="module-desc">Platform config key/value store with audit trail</div>
+        </div>
+        <span class="status-pill status-shipped">Shipped</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">audit-log</div>
+          <div class="module-desc">Immutable event log — all platform actions</div>
+        </div>
+        <span class="status-pill status-progress">In Progress</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">reporting</div>
+          <div class="module-desc">Scheduled reports — health, capacity, compliance</div>
+        </div>
+        <span class="status-pill status-planned">Planned</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">notifications</div>
+          <div class="module-desc">Email, Teams, webhook alert delivery</div>
+        </div>
+        <span class="status-pill status-planned">Planned</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">self-update</div>
+          <div class="module-desc">CloudSmith platform self-update pipeline</div>
+        </div>
+        <span class="status-pill status-progress">In Progress</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">multi-site</div>
+          <div class="module-desc">Cross-site cluster federation and sync</div>
+        </div>
+        <span class="status-pill status-planned">Planned</span>
+      </div>
+
+      <div class="module-row">
+        <div>
+          <div class="module-name">marketplace</div>
+          <div class="module-desc">Community module discovery and install</div>
+        </div>
+        <span class="status-pill status-planned">Planned</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <div class="cta-strip">
+    <h2>Ready to see it in action?</h2>
+    <p>Deploy CloudSmith to your environment in under 30 minutes — on-premises or Azure PaaS.</p>
+    <div class="btn-group">
+      <a class="btn-primary" href="/pricing.html">View deployment options &#x2192;</a>
+      <a class="btn-secondary" href="https://cloudsmith.cloud" target="_blank" rel="noopener">Read the docs</a>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p>
+      Built by <a href="https://hybridsolutions.cloud">Hybrid Cloud Solutions</a>
+      &nbsp;&#xB7;&nbsp;
+      <a href="https://github.com/cloudsmith-cloud" target="_blank" rel="noopener">GitHub</a>
+      &nbsp;&#xB7;&nbsp;
+      <a href="https://cloudsmith.cloud" target="_blank" rel="noopener">cloudsmith.cloud</a>
+    </p>
+    <p style="margin-top: 0.4rem; color: #2a2a2a;">
+      Apache 2.0 — open source forever.
+    </p>
+  </footer>
+
+</body>
+</html>
