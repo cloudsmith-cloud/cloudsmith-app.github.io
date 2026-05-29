@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CloudSmith — Coming Soon</title>
-  <meta name="description" content="CloudSmith — a modern, open-source cloud platform management solution for Azure Local and Hyper-V. The live hosted instance is coming soon." />
-  <meta property="og:title" content="CloudSmith — Coming Soon" />
-  <meta property="og:description" content="Forge your private cloud. The live instance of CloudSmith is on its way." />
+  <title>CloudSmith — Open-source infrastructure lifecycle management</title>
+  <meta name="description" content="CloudSmith — open-source infrastructure lifecycle management for Hyper-V and Azure Local. Deploy, monitor, update, and troubleshoot your private cloud." />
+  <meta property="og:title" content="CloudSmith — Infrastructure Lifecycle Management" />
+  <meta property="og:description" content="Open-source infrastructure lifecycle management for Hyper-V and Azure Local hybrid cloud environments." />
   <meta property="og:url" content="https://cloudsmith.app" />
   <style>
     *, *::before, *::after {
@@ -15,137 +15,838 @@
       padding: 0;
     }
 
+    :root {
+      --cs-surface-page:      #0a0a0a;
+      --cs-surface-card:      #141414;
+      --cs-surface-floating:  #1c1c1c;
+      --cs-border-default:    #262626;
+      --cs-border-hover:      #404040;
+      --cs-brand:             #f97316;
+      --cs-brand-hover:       #fb8c3a;
+      --cs-brand-pressed:     #d4631d;
+      --cs-brand-glow:        rgba(249, 115, 22, 0.18);
+      --cs-fg-default:        #f5f5f5;
+      --cs-fg-secondary:      #b3b3b3;
+      --cs-fg-tertiary:       #737373;
+      --cs-on-brand:          #000000;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      background: #0a0a0a;
-      color: #e5e5e5;
+      background: var(--cs-surface-page);
+      color: var(--cs-fg-default);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
       min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ─────────────────────────────────────────────── */
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 10, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--cs-border-default);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 60px;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      margin-right: auto;
+    }
+
+    .nav-brand-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--cs-brand);
+      border-radius: 6px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 2rem;
+      flex-shrink: 0;
+    }
+
+    .nav-brand-icon svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--cs-on-brand);
+    }
+
+    .nav-brand-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--cs-fg-default);
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      list-style: none;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.75rem;
+      color: var(--cs-fg-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus-visible {
+      color: var(--cs-fg-default);
+      background: var(--cs-surface-floating);
+      outline: none;
+    }
+
+    .nav-link .chevron {
+      font-size: 0.6rem;
+      opacity: 0.7;
+      transition: transform 0.15s;
+      display: inline-block;
+    }
+
+    .nav-dropdown-trigger:hover .chevron,
+    .nav-dropdown-trigger[aria-expanded="true"] .chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Dropdown */
+    .nav-dropdown {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      background: var(--cs-surface-floating);
+      border: 1px solid var(--cs-border-default);
+      border-radius: 8px;
+      padding: 0.4rem;
+      min-width: 210px;
+      display: none;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-dropdown.open {
+      display: block;
+    }
+
+    .nav-dropdown a {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      color: var(--cs-fg-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-dropdown a:hover,
+    .nav-dropdown a:focus-visible {
+      color: var(--cs-fg-default);
+      background: rgba(255, 255, 255, 0.06);
+      outline: none;
+    }
+
+    .nav-dropdown .dropdown-divider {
+      height: 1px;
+      background: var(--cs-border-default);
+      margin: 0.4rem 0.75rem;
+    }
+
+    .nav-cta {
+      margin-left: 0.75rem;
+      padding: 0.45rem 1rem;
+      background: var(--cs-brand);
+      color: var(--cs-on-brand);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 6px;
+      transition: background 0.15s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .nav-cta:hover {
+      background: var(--cs-brand-hover);
+    }
+
+    .nav-cta:active {
+      background: var(--cs-brand-pressed);
+      transform: translateY(1px);
+    }
+
+    /* Mobile nav toggle */
+    .nav-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--cs-fg-secondary);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 6px;
+      margin-left: auto;
+    }
+
+    .nav-toggle:hover {
+      color: var(--cs-fg-default);
+      background: var(--cs-surface-floating);
+    }
+
+    /* ─── HERO ────────────────────────────────────────────── */
+
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 1.5rem 5rem;
       text-align: center;
     }
 
-    .container {
-      max-width: 560px;
-      width: 100%;
-    }
-
-    .badge {
-      display: inline-block;
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
       padding: 0.3rem 0.9rem;
       border-radius: 9999px;
-      border: 1px solid #f97316;
-      color: #f97316;
-      font-size: 0.7rem;
+      border: 1px solid rgba(249, 115, 22, 0.4);
+      background: rgba(249, 115, 22, 0.08);
+      color: var(--cs-brand);
+      font-size: 0.72rem;
       font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 1.75rem;
+      margin-bottom: 2rem;
     }
 
-    h1 {
-      font-size: clamp(2.5rem, 10vw, 4.5rem);
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--cs-brand);
+      display: inline-block;
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 8vw, 5rem);
       font-weight: 800;
       line-height: 1.05;
+      letter-spacing: -0.03em;
       background: linear-gradient(135deg, #ffffff 0%, #f97316 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1.25rem;
     }
 
-    .tagline {
-      font-size: 1.15rem;
-      color: #f97316;
-      font-style: italic;
-      font-weight: 500;
-      margin-bottom: 2rem;
+    .hero-tagline {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--cs-fg-secondary);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
     }
 
-    p {
-      color: #a3a3a3;
-      line-height: 1.75;
-      font-size: 1rem;
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.875rem;
+      justify-content: center;
       margin-bottom: 1rem;
     }
 
-    .divider {
-      width: 3rem;
-      height: 2px;
-      background: linear-gradient(to right, transparent, #f97316, transparent);
-      border: none;
-      margin: 1.75rem auto;
-    }
-
-    .link {
-      color: #f97316;
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.75rem 1.75rem;
+      background: var(--cs-brand);
+      color: var(--cs-on-brand);
       text-decoration: none;
+      font-size: 0.9375rem;
       font-weight: 600;
-      transition: opacity 0.15s;
+      border-radius: 8px;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      box-shadow: 0 0 0 0 var(--cs-brand-glow);
     }
 
-    .link:hover {
-      opacity: 0.8;
-      text-decoration: underline;
+    .btn-primary:hover {
+      background: var(--cs-brand-hover);
+      box-shadow: 0 0 0 4px var(--cs-brand-glow);
     }
 
-    .link-arrow::after {
-      content: ' →';
+    .btn-primary:active {
+      background: var(--cs-brand-pressed);
+      transform: translateY(1px);
     }
 
-    footer {
-      margin-top: 3rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid #1f1f1f;
-      color: #404040;
-      font-size: 0.8rem;
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.75rem 1.75rem;
+      background: transparent;
+      color: var(--cs-fg-default);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      border-radius: 8px;
+      border: 1px solid var(--cs-border-hover);
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--cs-brand);
+      background: rgba(249, 115, 22, 0.06);
+      color: var(--cs-fg-default);
+    }
+
+    /* ─── SECTION COMMON ──────────────────────────────────── */
+
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4.5rem 1.5rem;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cs-brand);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 4vw, 2.25rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--cs-fg-default);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--cs-fg-secondary);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    .section-header {
+      margin-bottom: 3rem;
+    }
+
+    /* ─── VALUE PROP CARDS ────────────────────────────────── */
+
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .value-card {
+      background: var(--cs-surface-card);
+      border: 1px solid var(--cs-border-default);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .value-card:hover {
+      border-color: var(--cs-border-hover);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .value-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(249, 115, 22, 0.12);
+      border: 1px solid rgba(249, 115, 22, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      font-size: 1.3rem;
+    }
+
+    .value-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--cs-fg-default);
+      margin-bottom: 0.5rem;
+    }
+
+    .value-card p {
+      font-size: 0.9rem;
+      color: var(--cs-fg-secondary);
+      line-height: 1.7;
+    }
+
+    /* ─── DIVIDER ─────────────────────────────────────────── */
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--cs-border-default);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ─── FEATURE GRID ────────────────────────────────────── */
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .feature-tile {
+      background: var(--cs-surface-card);
+      border: 1px solid var(--cs-border-default);
+      border-radius: 10px;
+      padding: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .feature-tile:hover {
+      border-color: rgba(249, 115, 22, 0.35);
+      background: #161616;
+    }
+
+    .feature-tile-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: var(--cs-surface-floating);
+      border: 1px solid var(--cs-border-default);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+
+    .feature-tile-body h4 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--cs-fg-default);
+      margin-bottom: 0.3rem;
+    }
+
+    .feature-tile-body p {
+      font-size: 0.825rem;
+      color: var(--cs-fg-tertiary);
       line-height: 1.6;
     }
 
-    footer a {
-      color: #525252;
+    /* ─── FOOTER ──────────────────────────────────────────── */
+
+    .footer {
+      border-top: 1px solid var(--cs-border-default);
+      padding: 2rem 1.5rem;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .footer-copy {
+      font-size: 0.8rem;
+      color: var(--cs-fg-tertiary);
+    }
+
+    .footer-copy a {
+      color: var(--cs-fg-tertiary);
       text-decoration: none;
       transition: color 0.15s;
     }
 
-    footer a:hover {
-      color: #a3a3a3;
+    .footer-copy a:hover {
+      color: var(--cs-fg-secondary);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 0.8rem;
+      color: var(--cs-fg-tertiary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover {
+      color: var(--cs-fg-secondary);
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────── */
+
+    @media (max-width: 768px) {
+      .nav-links,
+      .nav-cta {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .nav-inner {
+        padding: 0 1rem;
+      }
+
+      .nav-mobile-open .nav-links {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: var(--cs-surface-floating);
+        border-bottom: 1px solid var(--cs-border-default);
+        padding: 1rem;
+        gap: 0.25rem;
+        z-index: 99;
+      }
+
+      .nav-mobile-open .nav-cta {
+        display: block;
+        margin: 0.75rem 1rem 1rem;
+        text-align: center;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: calc(60px + /* js-set-height */ 0px);
+        z-index: 99;
+      }
+
+      .hero {
+        padding: 4rem 1rem 3.5rem;
+      }
+
+      .section {
+        padding: 3rem 1rem;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* Focus styles */
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--cs-brand);
+      outline-offset: 2px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="badge">Coming Soon</div>
 
-    <h1>CloudSmith</h1>
-    <p class="tagline">Forge your private cloud.</p>
+  <!-- ─── NAV ─────────────────────────────────────────────── -->
+  <header>
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+      <div class="nav-inner">
 
-    <p>
-      The live hosted instance of CloudSmith is on its way.
-      When it launches, you'll be able to explore the platform here
-      without self-hosting — demos, sandboxed environments, and more.
-    </p>
+        <a href="/" class="nav-brand" aria-label="CloudSmith home">
+          <div class="nav-brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 1 L14 4.5 V11.5 L8 15 L2 11.5 V4.5 Z" fill="none" stroke="#000" stroke-width="1.5"/>
+              <path d="M5 8 L7.5 10.5 L11 6" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <span class="nav-brand-name">CloudSmith</span>
+        </a>
 
-    <hr class="divider" />
+        <ul class="nav-links" role="list">
 
-    <p>
-      Learn what CloudSmith is and follow the project at<br />
-      <a class="link link-arrow" href="https://cloudsmith.cloud">cloudsmith.cloud</a>
-    </p>
+          <!-- About dropdown -->
+          <li>
+            <button
+              class="nav-link nav-dropdown-trigger"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls="about-dropdown"
+              id="about-trigger"
+            >
+              About <span class="chevron" aria-hidden="true">&#9660;</span>
+            </button>
+            <div class="nav-dropdown" id="about-dropdown" role="menu" aria-labelledby="about-trigger">
+              <a href="https://cloudsmith.cloud/about.html" role="menuitem">About CloudSmith</a>
+              <a href="https://cloudsmith.cloud/product.html" role="menuitem">Capabilities</a>
+              <a href="https://cloudsmith.cloud/roadmap.html" role="menuitem">Roadmap</a>
+              <div class="dropdown-divider" role="separator"></div>
+              <a href="https://cloudsmith.cloud/changelog.html" role="menuitem">Changelog</a>
+              <a href="https://cloudsmith.cloud/contributing.html" role="menuitem">Contributing</a>
+              <a href="https://cloudsmith.cloud/community.html" role="menuitem">Community</a>
+            </div>
+          </li>
 
-    <footer>
-      <p>
-        Built by <a href="https://hybridsolutions.cloud">Hybrid Cloud Solutions</a>
-        &nbsp;·&nbsp;
-        <a href="https://thisismydemo.cloud">Country Cloud Boy</a>
+          <li>
+            <a class="nav-link" href="https://docs.cloudsmith.cloud" target="_blank" rel="noopener noreferrer">
+              Docs
+            </a>
+          </li>
+
+          <li>
+            <a class="nav-link" href="https://support.cloudsmith.cloud" target="_blank" rel="noopener noreferrer">
+              Support
+            </a>
+          </li>
+
+        </ul>
+
+        <a href="#" class="nav-cta" aria-label="Deploy CloudSmith now">Deploy Now</a>
+
+        <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-mobile">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ─── HERO ────────────────────────────────────────────── -->
+    <section class="hero" aria-labelledby="hero-title">
+
+      <div class="hero-badge">Open Source</div>
+
+      <h1 class="hero-title" id="hero-title">CloudSmith</h1>
+
+      <p class="hero-tagline">
+        Open-source infrastructure lifecycle management for Hyper-V and Azure Local
       </p>
-      <p style="margin-top: 0.4rem; color: #2a2a2a;">
-        CloudSmith will be open source.
+
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">
+          Deploy PaaS
+        </a>
+        <a href="#" class="btn-secondary">
+          Try Now
+        </a>
+      </div>
+
+    </section>
+
+    <!-- ─── VALUE PROP ───────────────────────────────────────── -->
+    <hr class="section-divider" />
+
+    <section class="section" aria-labelledby="value-title">
+      <div class="section-header">
+        <div class="section-label">Why CloudSmith</div>
+        <h2 class="section-title" id="value-title">Built for private cloud operations</h2>
+        <p class="section-sub">
+          Manage the full infrastructure lifecycle across Hyper-V clusters and Azure Local environments from a single, unified platform.
+        </p>
+      </div>
+
+      <div class="value-grid">
+
+        <div class="value-card">
+          <div class="value-icon" aria-hidden="true">&#9881;</div>
+          <h3>Full Lifecycle Management</h3>
+          <p>
+            From initial planning and deployment through ongoing updates, monitoring, and decommissioning — every phase of your infrastructure lifecycle in one place.
+          </p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon" aria-hidden="true">&#9729;</div>
+          <h3>Hybrid Cloud Ready</h3>
+          <p>
+            Native support for Hyper-V and Azure Local. Deploy on-premises, in Azure as PaaS, or run a hybrid configuration with bidirectional sync between environments.
+          </p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon" aria-hidden="true">&#128274;</div>
+          <h3>Open Source</h3>
+          <p>
+            Apache 2.0 licensed and community-driven. Audit the code, contribute modules, customize workflows, and deploy without vendor lock-in.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── FEATURE GRID ─────────────────────────────────────── -->
+    <hr class="section-divider" />
+
+    <section class="section" aria-labelledby="features-title">
+      <div class="section-header">
+        <div class="section-label">Platform Modules</div>
+        <h2 class="section-title" id="features-title">Everything your infrastructure needs</h2>
+        <p class="section-sub">
+          Modular by design — deploy only what you need. Each capability ships as an independently installable module.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+
+        <div class="feature-tile">
+          <div class="feature-tile-icon" aria-hidden="true">&#128640;</div>
+          <div class="feature-tile-body">
+            <h4>Deploy</h4>
+            <p>Automated cluster deployment for Hyper-V and Azure Local with guided wizards, pre-flight checks, and rollback support.</p>
+          </div>
+        </div>
+
+        <div class="feature-tile">
+          <div class="feature-tile-icon" aria-hidden="true">&#128200;</div>
+          <div class="feature-tile-body">
+            <h4>Monitor</h4>
+            <p>Real-time health dashboards, telemetry collection, alerting, and AI-assisted diagnostics for clusters, nodes, and workloads.</p>
+          </div>
+        </div>
+
+        <div class="feature-tile">
+          <div class="feature-tile-icon" aria-hidden="true">&#128260;</div>
+          <div class="feature-tile-body">
+            <h4>Update</h4>
+            <p>Coordinated OS, firmware, and driver update orchestration with maintenance windows, ring-based rollouts, and compliance reporting.</p>
+          </div>
+        </div>
+
+        <div class="feature-tile">
+          <div class="feature-tile-icon" aria-hidden="true">&#128269;</div>
+          <div class="feature-tile-body">
+            <h4>Troubleshoot</h4>
+            <p>Built-in log collection, trace correlation, event stream analysis, and AI-guided root cause investigation to resolve incidents faster.</p>
+          </div>
+        </div>
+
+        <div class="feature-tile">
+          <div class="feature-tile-icon" aria-hidden="true">&#128187;</div>
+          <div class="feature-tile-body">
+            <h4>Hardware</h4>
+            <p>Vendor-agnostic hardware lifecycle management covering inventory, BMC access, firmware tracking, and hardware alerts across Dell, HPE, and Lenovo.</p>
+          </div>
+        </div>
+
+        <div class="feature-tile">
+          <div class="feature-tile-icon" aria-hidden="true">&#128196;</div>
+          <div class="feature-tile-body">
+            <h4>Planning</h4>
+            <p>Capacity planning, resource forecasting, change management tracking, and infrastructure bill of materials generation.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ─── FOOTER ───────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="footer-copy">
+        &copy; 2026 <a href="https://hybridsolutions.cloud">Hybrid Cloud Solutions</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://cloudsmith.cloud">cloudsmith.cloud</a>
+        &nbsp;&middot;&nbsp;
+        Apache 2.0
       </p>
-    </footer>
-  </div>
+      <ul class="footer-links" role="list">
+        <li><a href="https://cloudsmith.cloud/contributing.html">Contributing</a></li>
+        <li><a href="https://docs.cloudsmith.cloud" target="_blank" rel="noopener noreferrer">Docs</a></li>
+        <li><a href="https://github.com/cloudsmith-cloud" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    // ─── About dropdown toggle ───────────────────────────────
+    const trigger = document.getElementById('about-trigger');
+    const dropdown = document.getElementById('about-dropdown');
+
+    if (trigger && dropdown) {
+      trigger.addEventListener('click', function () {
+        const isOpen = dropdown.classList.contains('open');
+        dropdown.classList.toggle('open', !isOpen);
+        trigger.setAttribute('aria-expanded', String(!isOpen));
+      });
+
+      // Close on outside click
+      document.addEventListener('click', function (e) {
+        if (!trigger.contains(e.target) && !dropdown.contains(e.target)) {
+          dropdown.classList.remove('open');
+          trigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // Close on Escape
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          dropdown.classList.remove('open');
+          trigger.setAttribute('aria-expanded', 'false');
+          trigger.focus();
+        }
+      });
+    }
+
+    // ─── Mobile nav toggle ───────────────────────────────────
+    const navToggle = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('.nav');
+
+    if (navToggle && nav) {
+      navToggle.addEventListener('click', function () {
+        const isOpen = nav.classList.contains('nav-mobile-open');
+        nav.classList.toggle('nav-mobile-open', !isOpen);
+        navToggle.setAttribute('aria-expanded', String(!isOpen));
+      });
+    }
+  </script>
+
 </body>
 </html>
