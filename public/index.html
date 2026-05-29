@@ -474,6 +474,85 @@
       line-height: 1.6;
     }
 
+    /* ─── EARLY ACCESS BAND ──────────────────────────────── */
+
+    .early-access-band {
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.08) 0%, rgba(249, 115, 22, 0.04) 100%);
+      border-top: 1px solid rgba(249, 115, 22, 0.2);
+      border-bottom: 1px solid rgba(249, 115, 22, 0.2);
+      padding: 4.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .early-access-inner {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .early-access-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.9rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(249, 115, 22, 0.5);
+      background: rgba(249, 115, 22, 0.1);
+      color: var(--cs-brand);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .early-access-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--cs-brand);
+    }
+
+    .early-access-title {
+      font-size: clamp(1.6rem, 4vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--cs-fg-default);
+      margin-bottom: 0.875rem;
+      line-height: 1.2;
+    }
+
+    .early-access-desc {
+      font-size: 1rem;
+      color: var(--cs-fg-secondary);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .early-access-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.875rem;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .early-access-secondary {
+      font-size: 0.875rem;
+      color: var(--cs-fg-tertiary);
+    }
+
+    .early-access-secondary a {
+      color: var(--cs-fg-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .early-access-secondary a:hover {
+      color: var(--cs-brand);
+    }
+
     /* ─── FOOTER ──────────────────────────────────────────── */
 
     .footer {
@@ -648,7 +727,17 @@
             </a>
           </li>
 
+          <li>
+            <a class="nav-link" href="https://cloudsmith.cloud" target="_blank" rel="noopener noreferrer" style="color: var(--cs-brand); opacity: 0.85;" aria-label="Visit cloudsmith.cloud — community, roadmap, and docs">
+              cloudsmith.cloud &#x2197;
+            </a>
+          </li>
+
         </ul>
+
+        <a href="#early-access" class="nav-link" style="margin-left: 0.25rem; color: var(--cs-fg-secondary);" aria-label="Join the private preview">
+          Join Preview
+        </a>
 
         <a href="/deploy.html" class="nav-cta" aria-label="Deploy CloudSmith now">Deploy Now</a>
 
@@ -794,6 +883,35 @@
 
   </main>
 
+  <!-- ─── EARLY ACCESS BAND ───────────────────────────────────── -->
+  <section class="early-access-band" id="early-access" aria-labelledby="early-access-title">
+    <div class="early-access-inner">
+      <div class="early-access-badge">Private Preview</div>
+      <h2 class="early-access-title" id="early-access-title">
+        CloudSmith is in private preview.<br />Get early access.
+      </h2>
+      <p class="early-access-desc">
+        Preview members get access to the latest builds, a direct feedback channel
+        with the core team, and early input on the roadmap. No SLA, no commitment —
+        just early access to what's being built.
+      </p>
+      <div class="early-access-actions">
+        <a
+          href="https://github.com/cloudsmith-cloud/cloudsmith-cloud.github.io/discussions"
+          class="btn-primary"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Request early access via GitHub Discussions"
+        >
+          Request Access &#x2192;
+        </a>
+      </div>
+      <p class="early-access-secondary">
+        Already have access? <a href="/deploy.html">Deploy Now &#x2192;</a>
+      </p>
+    </div>
+  </section>
+
   <!-- ─── FOOTER ───────────────────────────────────────────── -->
   <footer class="footer">
     <div class="footer-inner">
@@ -810,6 +928,7 @@
         <li><a href="https://cloudsmith.cloud/contributing.html">Contributing</a></li>
         <li><a href="https://docs.cloudsmith.cloud" target="_blank" rel="noopener noreferrer">Docs</a></li>
         <li><a href="https://github.com/cloudsmith-cloud" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <li><a href="https://cloudsmith.cloud" target="_blank" rel="noopener noreferrer" style="color: var(--cs-brand); opacity: 0.8;">cloudsmith.cloud &#x2197;</a></li>
       </ul>
     </div>
   </footer>
