@@ -62,7 +62,7 @@
       margin-bottom: 2rem;
     }
 
-    /* ---- Portal connect form ---- */
+    /* ---- Cards ---- */
     .card {
       background: #111111;
       border: 1px solid #1f1f1f;
@@ -92,44 +92,6 @@
       color: #737373;
       line-height: 1.6;
       margin-bottom: 1.1rem;
-    }
-
-    label {
-      display: block;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #a3a3a3;
-      margin-bottom: 0.4rem;
-    }
-
-    input[type="url"],
-    input[type="text"] {
-      width: 100%;
-      background: #0a0a0a;
-      border: 1px solid #2a2a2a;
-      border-radius: 6px;
-      color: #e5e5e5;
-      font-size: 0.9rem;
-      padding: 0.6rem 0.75rem;
-      outline: none;
-      transition: border-color 0.15s;
-      margin-bottom: 0.85rem;
-    }
-
-    input[type="url"]:focus,
-    input[type="text"]:focus {
-      border-color: #f97316;
-    }
-
-    input::placeholder {
-      color: #3a3a3a;
-    }
-
-    .input-hint {
-      font-size: 0.75rem;
-      color: #525252;
-      margin-top: -0.6rem;
-      margin-bottom: 0.85rem;
     }
 
     .btn {
@@ -169,13 +131,6 @@
 
     .btn + .btn {
       margin-top: 0.6rem;
-    }
-
-    .error-msg {
-      font-size: 0.8rem;
-      color: #f87171;
-      margin-bottom: 0.6rem;
-      display: none;
     }
 
     /* ---- No deployment section ---- */
@@ -251,39 +206,13 @@
       <a href="https://cloudsmith.cloud" style="color: #f97316; font-weight: 600;">cloudsmith.cloud</a>
     </nav>
 
-    <h1>Connect to Your Portal</h1>
+    <h1>Deploy CloudSmith</h1>
     <p class="subtitle">
-      Enter the URL of your CloudSmith deployment to open the portal.<br />
-      Each CloudSmith instance runs at its own address.
+      Deploy CloudSmith to your Azure subscription in minutes.<br />
+      Choose a single deployment or a full test environment.
     </p>
 
-    <div class="card">
-      <div class="card-label">Already deployed</div>
-      <h2>Go to My CloudSmith Portal</h2>
-      <p>
-        Enter the address of your deployed CloudSmith instance.
-        This is the URL you chose when running the installer or deploying to Azure.
-      </p>
-
-      <form id="portal-form" onsubmit="goToPortal(event)">
-        <label for="portal-url">Your CloudSmith portal URL</label>
-        <input
-          type="text"
-          id="portal-url"
-          name="portal-url"
-          placeholder="https://portal.yourdomain.com"
-          autocomplete="url"
-          spellcheck="false"
-        />
-        <p class="input-hint">Example: https://cloudsmith.mycompany.com or http://192.168.1.10:8080</p>
-        <p class="error-msg" id="url-error">Please enter a valid URL (must start with http:// or https://).</p>
-        <button type="submit" class="btn btn-primary">Go to Portal &rarr;</button>
-      </form>
-    </div>
-
-    <hr class="divider" />
-
-    <p class="deploy-title">Don't have CloudSmith yet?</p>
+    <p class="deploy-title">Choose your deployment</p>
 
     <div class="card">
       <div class="card-label">Get started</div>
@@ -304,15 +233,12 @@
       <div class="card-label">Full test environment</div>
       <h2>Deploy Lab + CloudSmith Together</h2>
       <p>
-        Get a complete test setup in one go: deploy the CloudSmith management platform
-        and a 2-node Hyper-V cluster with domain controller and relay — everything you
-        need to explore the full product.
+        One click deploys everything: CloudSmith management platform and a 2-node
+        Hyper-V cluster with domain controller and relay. The complete setup to
+        explore the full product end to end.
       </p>
-      <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcloudsmith-cloud%2Fcloudsmith-installer%2Fmain%2Fazuredeploy.json" class="btn btn-primary">
-        1. Deploy CloudSmith (PaaS) &rarr;
-      </a>
-      <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcloudsmith-cloud%2Fcloudsmith-installer%2Fmain%2Fazuredeploy-lab.json" class="btn btn-secondary">
-        2. Deploy Lab Clusters &rarr;
+      <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcloudsmith-cloud%2Fcloudsmith-installer%2Fmain%2Fazuredeploy-full.json" class="btn btn-primary">
+        Deploy Full Test Environment &rarr;
       </a>
     </div>
 
@@ -342,44 +268,5 @@
 
   </div>
 
-  <script>
-    function normalizeUrl(raw) {
-      const trimmed = raw.trim();
-      if (!trimmed) return null;
-      // If user omitted the scheme, prepend https://
-      if (!/^https?:\/\//i.test(trimmed)) {
-        return 'https://' + trimmed;
-      }
-      return trimmed;
-    }
-
-    function isValidUrl(str) {
-      try {
-        const u = new URL(str);
-        return u.protocol === 'http:' || u.protocol === 'https:';
-      } catch {
-        return false;
-      }
-    }
-
-    function goToPortal(event) {
-      event.preventDefault();
-      const input = document.getElementById('portal-url');
-      const errorEl = document.getElementById('url-error');
-      const normalized = normalizeUrl(input.value);
-
-      errorEl.style.display = 'none';
-
-      if (!normalized || !isValidUrl(normalized)) {
-        errorEl.style.display = 'block';
-        input.focus();
-        return;
-      }
-
-      // Navigate to the portal URL
-      window.location.href = normalized;
-    }
-
-  </script>
 </body>
 </html>
