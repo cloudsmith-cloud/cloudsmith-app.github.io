@@ -292,25 +292,22 @@
         Deploy CloudSmith to your own Azure subscription with one click,
         or run it on-premises on Hyper-V or Azure Local.
       </p>
-      <!-- AB#2428 will wire the real Deploy to Azure URL -->
-      <a href="#" class="btn btn-primary" id="deploy-azure-btn" onclick="placeholderClick(event, 'Deploy to Azure')">
+      <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcloudsmith-cloud%2Fcloudsmith-installer%2Fmain%2Fazuredeploy.json" class="btn btn-primary">
         Deploy to Azure
       </a>
-      <a href="https://cloudsmith.cloud/docs/install" class="btn btn-secondary">
+      <a href="https://docs.cloudsmith.cloud/docs/getting-started/" class="btn btn-secondary">
         Install on-premises
       </a>
     </div>
 
     <div class="card">
       <div class="card-label">Try it out</div>
-      <h2>Try Now (Coming Soon)</h2>
+      <h2>Join the Preview</h2>
       <p>
-        A sandboxed Try Now environment is in development.
-        You'll be able to explore CloudSmith without deploying anything.
+        Want to explore CloudSmith before deploying? Join the private preview to get early access and try a guided demo environment.
       </p>
-      <!-- AB#2428 / AB#2418 will wire the real Try Now URL -->
-      <a href="#" class="btn btn-secondary" onclick="placeholderClick(event, 'Try Now')">
-        Try Now &mdash; Coming Soon
+      <a href="/preview.html" class="btn btn-secondary">
+        Join Preview &rarr;
       </a>
     </div>
 
@@ -367,10 +364,6 @@
       window.location.href = normalized;
     }
 
-    function placeholderClick(event, label) {
-      event.preventDefault();
-      alert(label + ' will be available soon. Follow https://cloudsmith.cloud for updates.');
-    }
   </script>
 </body>
 </html>
